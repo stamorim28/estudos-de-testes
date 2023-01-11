@@ -1,3 +1,5 @@
+const { parse } = require("@babel/core");
+
 const keyValueToString = ([key, value]) => {
   if (typeof value === "object" && !Array.isArray(value)) {
     throw new Error("Please check you params");
@@ -38,4 +40,18 @@ module.exports = {
   //     })
   //     .join("&");
   // },
+
+  parse(string) {
+    return Object.fromEntries(
+      string.split("&").map((item) => {
+        let [key, value] = item.split("=");
+
+        if (value.indexOf(",") > -1) {
+          value = value.split(",");
+        }
+
+        return [key, value];
+      })
+    );
+  },
 };
